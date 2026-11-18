@@ -145,6 +145,7 @@ const friendly = m => {
   if(/Email not confirmed/i.test(m)) return '메일함에서 가입 인증을 먼저 완료해 주세요.';
   if(/already registered|already been registered/i.test(m)) return '이미 가입된 이메일입니다. 로그인하거나 비밀번호 찾기를 이용해 주세요.';
   if(/Password should be|weak/i.test(m)) return '비밀번호는 8자 이상, 영문과 숫자를 섞어 주세요.';
+  if(/Signups not allowed|signup.*disabled/i.test(m)) return '지금은 가입을 받지 않고 있습니다. 담당자에게 문의해 주세요.';
   if(/rate limit|too many/i.test(m)) return '요청이 많아 잠시 막혔습니다. 몇 분 뒤 다시 시도해 주세요.';
   if(/JWT|token|session/i.test(m)) return '로그인이 만료되었습니다. 다시 로그인해 주세요.';
   if(/Failed to fetch|NetworkError/i.test(m)) return '서버에 연결하지 못했습니다. 인터넷 연결을 확인해 주세요.';
