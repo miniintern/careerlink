@@ -1,0 +1,14 @@
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+*.sql.gz
+*.dump
+backup*/
+data/
+uploads/
+.env
+.env.*
+*service_role*
+.DS_Store
+Thumbs.db
