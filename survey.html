@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#ece7ff">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co wss://*.supabase.co ; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<script>if (window.top !== window.self) { window.top.location = window.self.location; }</script>
+<title>설문 · 오픈놀 커리어링크</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+/* 설문 응답 페이지: 참여자 페이지와 같은 밝은 화면 */
+:root{
+  /* 밝은 화면만 사용 (휴대폰이 다크 모드여도 밝게 보임) */
+  color-scheme:light;
+  --bg:#f9f8ff; --surface:#ffffff; --surface-2:#f7f5ff; --ink:#26223d; --sub:#625d7c; --faint:#938eaa;
+  --line:#ece9f6; --line-strong:#dcd7ee;
+  --accent:#6c5ce7; --accent-deep:#5443d6; --accent-soft:#f0edff; --on-accent:#ffffff;
+  --good:#0d7d60; --good-soft:#e3f7ef; --warn:#8f620c; --warn-soft:#fff4dc; --bad:#b03f3f; --bad-soft:#fdeaea;
+  --shadow:0 1px 2px rgba(70,50,170,.04),0 8px 24px rgba(70,50,170,.07);
+  --f-body:"IBM Plex Sans KR",Pretendard,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{margin:0;background:linear-gradient(180deg,#ece7ff 0,#f6f3ff 220px,var(--bg) 520px) no-repeat,var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding:16px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{margin:0;text-wrap:balance}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.env{border:1px solid #f6e3b4;background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:8px 12px;font-size:12.5px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{display:flex;gap:10px;align-items:center}
+.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,#8b7bff,#6c5ce7);box-shadow:0 4px 12px rgba(108,92,231,.3);color:var(--on-accent);display:grid;place-items:center;font-weight:700}
+.brand b{display:block;font-size:15px}
+.brand small{display:block;font-size:11px;color:var(--faint)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:12px}
+.card h2{font-size:17px}
+.card p{margin:0;color:var(--sub);font-size:14px}
+.muted{color:var(--sub);font-size:13.5px}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:6px;border:1px solid var(--accent);background:linear-gradient(135deg,#7d6dff,#6c5ce7);box-shadow:0 4px 12px rgba(108,92,231,.22);color:var(--on-accent);border-radius:12px;padding:11px 16px;font-weight:600;min-height:46px}
+.btn:hover{background:var(--accent-deep)}
+.btn.ghost{background:var(--surface);box-shadow:none;color:var(--accent-deep);border-color:var(--line-strong)}
+.btn.ghost:hover{background:var(--accent-soft)}
+.btn.sm{min-height:36px;padding:6px 12px;font-size:13.5px;border-radius:10px}
+.btn.full{width:100%}
+.btn[disabled]{opacity:.55;cursor:default}
+.link{border:0;background:none;color:var(--accent-deep);padding:0;text-decoration:underline;text-underline-offset:3px}
+.f{display:flex;flex-direction:column;gap:6px}
+.f label,.f .lbl{font-weight:600;font-size:14px}
+.f .hint{font-size:12.5px;color:var(--faint)}
+.input,.select,.textarea{width:100%;border:1px solid var(--line-strong);background:var(--surface);border-radius:12px;padding:11px 12px;min-height:46px}
+.textarea{min-height:90px;resize:vertical}
+.err{background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.ok{background:var(--good-soft);color:var(--good);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.note{background:var(--warn-soft);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:13.5px}
+.tabs{display:flex;gap:6px;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:4px}
+.tabs button{flex:1;border:0;background:none;border-radius:9px;padding:9px;font-weight:600;color:var(--sub)}
+.tabs button.on{background:var(--surface);color:var(--accent-deep);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{position:relative}
+.chip input{position:absolute;opacity:0;pointer-events:none}
+.chip span{display:inline-block;border:1px solid var(--line-strong);border-radius:99px;padding:8px 14px;font-size:14px;background:var(--surface)}
+.chip input:checked + span{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-deep);font-weight:600}
+.chip input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.q{display:flex;flex-direction:column;gap:10px;padding-top:14px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.q .qt{font-weight:700;font-size:15.5px}
+.q .qt small{font-weight:500;color:var(--faint);font-size:12.5px;margin-left:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:420px){.grid2{grid-template-columns:1fr}}
+.tag{display:inline-block;font-size:11.5px;background:var(--surface-2);border:1px solid var(--line);border-radius:99px;padding:1px 8px;color:var(--sub)}
+.state{display:inline-block;font-size:12.5px;font-weight:600;border-radius:99px;padding:2px 10px;background:var(--accent-soft);color:var(--accent-deep)}
+.svc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.svc div{border:1px solid transparent;border-radius:14px;padding:13px;background:var(--surface-2);display:flex;flex-direction:column;gap:4px}
+.svc div:nth-child(5n+1){background:#f1eeff}.svc div:nth-child(5n+2){background:#e8f7f1}.svc div:nth-child(5n+3){background:#fff3e6}
+.svc div:nth-child(5n+4){background:#e9f3ff}.svc div:nth-child(5n){background:#fff8d9}.svc .tag{background:rgba(255,255,255,.75);border-color:transparent}
+.svc b{font-size:14px}
+.list{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.list li{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+dl.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0;font-size:14px}
+dl.kv dt{color:var(--sub)}
+dl.kv dd{margin:0;overflow-wrap:anywhere}
+details.terms{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13px;color:var(--sub)}
+details.terms summary{cursor:pointer;color:var(--ink);font-weight:600}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14.5px}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--accent)}
+.foot{font-size:12px;color:var(--faint);text-align:center}
+[hidden]{display:none !important}
+.hero{gap:10px;background:linear-gradient(160deg,#ffffff 0,#f6f3ff 100%)}
+.hero h1{font-size:21px;line-height:1.4}
+.meta{display:flex;gap:6px;flex-wrap:wrap}
+.scale{display:flex;gap:6px;flex-wrap:wrap}
+.scale label{position:relative}
+.scale input{position:absolute;opacity:0;pointer-events:none}
+.scale span{display:grid;place-items:center;width:46px;height:46px;border:1px solid var(--line-strong);border-radius:12px;background:var(--surface);font-weight:600}
+.scale input:checked + span{background:var(--accent);border-color:var(--accent);color:#fff}
+.scale input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px}
+.scalelab{display:flex;justify-content:space-between;font-size:12.5px;color:var(--faint)}
+.q{border-top:1px solid var(--line);padding-top:16px}
+.q:first-of-type{border-top:0;padding-top:0}
+</style>
+
+</head>
+<body>
+<div id="app" class="wrap"><p class="muted" style="text-align:center;padding:40px 0">불러오는 중…</p></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
+<script>document.write('<script src="config.js?v=' + Date.now() + '"><\/script>');</script>
+<script>
+'use strict';
+/* =====================================================================
+   오픈놀 커리어링크 설문 응답 페이지
+   · 로그인 없이 개인 링크(?t=…)로만 응답합니다. 링크가 없으면 아무것도 볼 수 없습니다.
+   · 공개 키만 사용하며, s_open / s_preview / s_submit 세 가지 DB 함수만 부릅니다.
+   · 링크가 다른 사람에게 전달될 수 있어 기존 연락처·직장 정보는 미리 채워 보여 주지 않습니다.
+   ===================================================================== */
+const CFG = window.CAREERLINK_CONFIG || {};
+const $ = s => document.querySelector(s);
+const E = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad = n => String(n).padStart(2, '0');
+const fmtD = s => { if(!s) return ''; const d = new Date(s); return isNaN(d) ? String(s) : `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}`; };
+const EMP_TYPES = ['정규직','계약직','인턴','프리랜서','일용직','기타'];
+const qs = new URLSearchParams(location.search);
+const TOKEN = (qs.get('t') || '').trim().toLowerCase(), PREVIEW = (qs.get('p') || '').trim().toLowerCase();
+
+const st = {view:'loading', sv:null, ans:{}, err:'', busy:false, again:false};
+let sb = null, setupErr = '';
+(function(){
+  const key = String(CFG.SUPABASE_ANON_KEY || '');
+  if(!CFG.SUPABASE_URL || !key){ setupErr = '연결 설정(config.js)이 비어 있습니다. 담당자에게 알려 주세요.'; return; }
+  const secret = key.startsWith('sb_secret_') || (() => { try{ return JSON.parse(atob(key.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))).role === 'service_role'; }catch{ return false; } })();
+  if(secret){ setupErr = '연결 설정에 비밀 키가 들어 있어 페이지를 열지 않았습니다. 담당자에게 알려 주세요.'; return; }
+  if(!window.supabase){ setupErr = '필요한 파일을 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요.'; return; }
+  sb = window.supabase.createClient(CFG.SUPABASE_URL, key, {auth:{persistSession:false, autoRefreshToken:false, detectSessionInUrl:false}});
+})();
+const friendly = m => /Failed to fetch|NetworkError/i.test(m) ? '서버에 연결하지 못했습니다. 인터넷 연결을 확인하고 다시 시도해 주세요.' : String(m || '').replace(/^\[([^\]]+)\]\s*/, '‘$1’ 문항: ');
+async function rpc(fn, args){ const {data, error} = await sb.rpc(fn, args); if(error) throw Error(friendly(error.message)); return data; }
+
+/* ---------- 화면 ---------- */
+function render(){
+  const env = CFG.ENV_LABEL ? `<div class="env"><b>${E(CFG.ENV_LABEL)}</b> · 실제 개인정보를 입력하지 마세요</div>` : '';
+  const top = `<header class="top"><div class="brand"><span class="logo" aria-hidden="true">O</span><span><b>오픈놀 커리어링크</b><small>수료생 설문</small></span></div></header>`;
+  let body;
+  if(setupErr) body = card(`<div class="err">${E(setupErr)}</div>`);
+  else if(st.view === 'loading') body = card('<p class="muted">불러오는 중…</p>');
+  else if(st.view === 'error') body = card(`<h2>설문을 열 수 없습니다</h2><div class="err">${E(st.err)}</div><p>받은 메일이나 문자의 링크를 그대로 눌러 들어와 주세요. 계속 열리지 않으면 담당자에게 문의해 주세요.</p>`);
+  else if(st.view === 'done') body = doneView();
+  else body = formView();
+  $('#app').innerHTML = env + top + body + `<p class="foot">오픈놀 커리어성장사업부 · 이 링크는 받으신 분 전용입니다. 다른 분께 전달하지 말아 주세요.</p>`;
+}
+const card = h => `<section class="card">${h}</section>`;
+
+function formView(){
+  const s = st.sv; const qsList = s.questions || [];
+  const closed = !s.open_now;
+  const head = `<section class="card hero"><h1>${E(s.title)}</h1>
+    ${s.description ? `<p style="white-space:pre-line">${E(s.description)}</p>` : ''}
+    <div class="meta">${s.name ? `<span class="tag">${E(s.name)}님</span>` : ''}${s.closes_at ? `<span class="tag">${fmtD(s.closes_at)}까지</span>` : ''}<span class="tag">${qsList.length}문항</span></div>
+    ${s.preview ? '<div class="note">미리보기 화면입니다. 제출해도 저장되지 않습니다.</div>' : ''}
+    ${s.responded_at && !s.preview ? `<div class="ok">${fmtD(s.responded_at)}에 이미 응답하셨습니다. 다시 제출하면 새 응답으로 바뀝니다.</div>` : ''}
+    ${closed && !s.preview ? `<div class="note">${s.opens_at && new Date(s.opens_at) > new Date() ? `${fmtD(s.opens_at)}부터 응답할 수 있습니다.` : '지금은 응답 기간이 아닙니다.'}</div>` : ''}</section>`;
+  if(closed && !s.preview) return head;
+  const status = currentStatus();
+  return head + `<form id="svForm" novalidate class="card" style="gap:18px">${qsList.map((q, i) => qView(q, i, status)).join('')}
+    <div id="s-err"></div>
+    <button class="btn full" type="submit" ${st.busy ? 'disabled' : ''}>${s.preview ? '제출해 보기 (저장 안 됨)' : '제출하기'}</button></form>`;
+}
+function currentStatus(){ const q = (st.sv.questions || []).find(x => x.map === 'status'); return q ? st.ans[q.id] : null; }
+function qView(q, i, status){
+  const id = q.id, v = st.ans[id], req = q.required || q.type === 'consent';
+  if(q.type === 'employment' && (st.sv.questions || []).some(x => x.map === 'status') && !['employed','startup'].includes(status)) return '';
+  const head = `<div class="qt">${i + 1}. ${E(q.title)} ${req ? '<small>필수</small>' : '<small>선택</small>'}${q.type === 'multi' && q.max ? `<small>· 최대 ${q.max}개</small>` : ''}</div>${q.help && q.type !== 'consent' ? `<p class="muted" style="margin:0;white-space:pre-line">${E(q.help)}</p>` : ''}`;
+  const lab = o => (q.labels || {})[o] || o;
+  let ctl = '';
+  if(q.type === 'single'){
+    const oth = q.other || (q.map === 'status');
+    ctl = `<div class="chips" role="radiogroup">${q.options.map(o => `<label class="chip"><input type="radio" name="${id}" value="${E(o)}" ${v === o ? 'checked' : ''}><span>${E(lab(o))}</span></label>`).join('')}
+      ${q.other ? `<label class="chip"><input type="radio" name="${id}" value="__other" ${v === '__other' ? 'checked' : ''}><span>기타</span></label>` : ''}</div>
+      ${oth && (v === '__other' || (q.map === 'status' && v === 'other')) ? `<input class="input" name="${id}__other" value="${E(st.ans[id + '__other'] || '')}" maxlength="100" placeholder="직접 적어 주세요">` : ''}`;
+  } else if(q.type === 'multi'){
+    const arr = Array.isArray(v) ? v : [];
+    ctl = `<div class="chips">${q.options.map(o => `<label class="chip"><input type="checkbox" name="${id}" value="${E(o)}" ${arr.includes(o) ? 'checked' : ''}><span>${E(o)}</span></label>`).join('')}
+      ${q.other ? `<label class="chip"><input type="checkbox" name="${id}" value="__other" ${arr.includes('__other') ? 'checked' : ''}><span>기타</span></label>` : ''}</div>
+      ${q.other && arr.includes('__other') ? `<input class="input" name="${id}__other" value="${E(st.ans[id + '__other'] || '')}" maxlength="100" placeholder="직접 적어 주세요">` : ''}`;
+  } else if(q.type === 'short') ctl = `<input class="input" name="${id}" value="${E(v || '')}" maxlength="200">`;
+  else if(q.type === 'long') ctl = `<textarea class="textarea" name="${id}" maxlength="2000">${E(v || '')}</textarea>`;
+  else if(q.type === 'date') ctl = `<input class="input" type="date" name="${id}" value="${E(v || '')}">`;
+  else if(q.type === 'scale'){
+    const mn = q.min ?? 1, mx = q.max ?? 5; const nums = []; for(let n = mn; n <= mx; n++) nums.push(n);
+    ctl = `<div class="scale" role="radiogroup">${nums.map(n => `<label><input type="radio" name="${id}" value="${n}" ${String(v) === String(n) ? 'checked' : ''}><span>${n}</span></label>`).join('')}</div>
+      ${q.scale_left || q.scale_right ? `<div class="scalelab"><span>${E(q.scale_left || '')}</span><span>${E(q.scale_right || '')}</span></div>` : ''}`;
+  } else if(q.type === 'employment'){
+    const e = v || {};
+    ctl = `<div class="grid2"><div class="f"><label for="${id}-c">회사·기관명</label><input class="input" id="${id}-c" data-emp="${id}:company" value="${E(e.company || '')}" maxlength="100"></div>
+      <div class="f"><label for="${id}-j">직무</label><input class="input" id="${id}-j" data-emp="${id}:job_title" value="${E(e.job_title || '')}" maxlength="60"></div>
+      <div class="f"><label for="${id}-t">고용형태</label><select class="select" id="${id}-t" data-emp="${id}:employment_type"><option value="">선택 안 함</option>${EMP_TYPES.map(t => `<option ${e.employment_type === t ? 'selected' : ''}>${t}</option>`).join('')}</select></div>
+      <div class="f"><label for="${id}-s">입사(창업)일</label><input class="input" id="${id}-s" type="date" data-emp="${id}:start_date" value="${E(e.start_date || '')}"></div>
+      <div class="f"><label for="${id}-r">근무지역</label><input class="input" id="${id}-r" data-emp="${id}:work_region" value="${E(e.work_region || '')}" placeholder="예: 서울" maxlength="40"></div></div>`;
+  } else if(q.type === 'contact'){
+    const c = v || {};
+    ctl = `<div class="grid2"><div class="f"><label for="${id}-p">휴대전화</label><input class="input" id="${id}-p" data-ct="${id}:phone" value="${E(c.phone || '')}" inputmode="tel" placeholder="010-1234-5678"></div>
+      <div class="f"><label for="${id}-e">이메일</label><input class="input" id="${id}-e" type="email" data-ct="${id}:email" value="${E(c.email || '')}"></div></div>`;
+  } else if(q.type === 'consent'){
+    const c = v || {};
+    ctl = `<details class="terms"><summary>[필수] 개인정보 수집·이용 안내 보기</summary><p style="white-space:pre-line;margin:8px 0 0">${E(q.help || '')}</p></details>
+      <label class="check"><input type="checkbox" data-cs="${id}:privacy" ${c.privacy ? 'checked' : ''}><span><b>[필수]</b> 위 개인정보 수집·이용에 동의합니다.</span></label>
+      ${q.marketing ? `<details class="terms"><summary>[선택] 마케팅 정보 수신 안내</summary><p style="margin:8px 0 0">오픈놀 프로그램, 채용 정보, 행사 소식을 문자·이메일로 보내 드립니다. 동의하지 않아도 설문에 참여할 수 있고, 언제든 철회할 수 있습니다.</p></details>
+        <div class="lbl" style="font-size:14px;font-weight:600">[선택] 마케팅 정보 수신</div>
+        <div class="chips" role="radiogroup"><label class="chip"><input type="radio" data-cs="${id}:marketing" name="${id}-mk" value="1" ${c.marketing === true ? 'checked' : ''}><span>동의합니다</span></label><label class="chip"><input type="radio" data-cs="${id}:marketing" name="${id}-mk" value="0" ${c.marketing === false ? 'checked' : ''}><span>동의하지 않습니다</span></label></div>` : ''}`;
+  }
+  return `<div class="q" id="q-${id}">${head}${ctl}</div>`;
+}
+function doneView(){
+  return card(`<h2>${st.sv.preview ? '미리보기: 제출 화면' : '제출했습니다'}</h2>
+    <p>${st.sv.preview ? '실제 링크로 들어온 참여자에게는 이 화면이 보입니다. 미리보기 응답은 저장되지 않았습니다.' : '응답해 주셔서 감사합니다. 남겨 주신 내용을 바탕으로 필요한 서비스를 안내해 드리겠습니다.'}</p>
+    ${st.again ? '<p class="muted">이전 응답은 이번 응답으로 바뀌었습니다.</p>' : ''}
+    ${st.sv.open_now || st.sv.preview ? '<button class="btn ghost full" type="button" data-act="again">응답 다시 보기·고치기</button>' : ''}`);
+}
+
+/* ---------- 입력 ---------- */
+function readForm(){
+  const f = $('#svForm'); if(!f) return;
+  for(const q of st.sv.questions || []){
+    const id = q.id;
+    if(q.type === 'single'){ const c = f.querySelector(`input[name="${CSS.escape(id)}"]:checked`); st.ans[id] = c ? c.value : ''; }
+    else if(q.type === 'multi') st.ans[id] = [...f.querySelectorAll(`input[name="${CSS.escape(id)}"]:checked`)].map(x => x.value);
+    else if(['short','long','date'].includes(q.type)){ const el = f.querySelector(`[name="${CSS.escape(id)}"]`); if(el) st.ans[id] = el.value; }
+    else if(q.type === 'scale'){ const c = f.querySelector(`input[name="${CSS.escape(id)}"]:checked`); st.ans[id] = c ? c.value : ''; }
+    const o = f.querySelector(`[name="${CSS.escape(id + '__other')}"]`); if(o) st.ans[id + '__other'] = o.value;
+  }
+  f.querySelectorAll('[data-emp]').forEach(el => { const [id, k] = el.dataset.emp.split(':'); (st.ans[id] = st.ans[id] || {})[k] = el.value; });
+  f.querySelectorAll('[data-ct]').forEach(el => { const [id, k] = el.dataset.ct.split(':'); (st.ans[id] = st.ans[id] || {})[k] = el.value; });
+  f.querySelectorAll('[data-cs]').forEach(el => { const [id, k] = el.dataset.cs.split(':'); const o = (st.ans[id] = st.ans[id] || {});
+    if(k === 'privacy') o.privacy = el.checked; else if(el.checked) o.marketing = el.value === '1'; });
+}
+function check(){
+  const status = currentStatus();
+  for(const [i, q] of (st.sv.questions || []).entries()){
+    const v = st.ans[q.id], n = `${i + 1}번`;
+    if(q.type === 'employment' && (st.sv.questions || []).some(x => x.map === 'status') && !['employed','startup'].includes(status)) continue;
+    if(q.type === 'consent'){ if(!(v && v.privacy)) return [q.id, `${n} 필수 개인정보 수집·이용에 동의해야 제출할 수 있습니다.`]; continue; }
+    if((q.type === 'single') && (v === '__other' || (q.map === 'status' && v === 'other')) && q.other && !String(st.ans[q.id + '__other'] || '').trim()) return [q.id, `${n} 기타 내용을 적어 주세요.`];
+    if(q.type === 'multi'){
+      if(Array.isArray(v) && v.includes('__other') && !String(st.ans[q.id + '__other'] || '').trim()) return [q.id, `${n} 기타 내용을 적어 주세요.`];
+      if(q.max && Array.isArray(v) && v.length > q.max) return [q.id, `${n}은(는) ${q.max}개까지 고를 수 있습니다.`];
+    }
+    if(q.type === 'contact' && v){
+      if(v.phone && !/^01[016789]-?\d{3,4}-?\d{4}$/.test(v.phone.replace(/\s/g, ''))) return [q.id, `${n} 휴대전화 번호를 확인해 주세요. 예: 010-1234-5678`];
+      if(v.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.email.trim())) return [q.id, `${n} 이메일 형식을 확인해 주세요.`];
+    }
+    if(!q.required) continue;
+    const empty = v == null || v === '' || (Array.isArray(v) && !v.length) || (q.type === 'employment' && !String(v.company || '').trim()) || (q.type === 'contact' && !v.phone && !v.email);
+    if(empty) return [q.id, `${n} ‘${q.title}’에 답해 주세요.`];
+  }
+  return null;
+}
+document.addEventListener('change', ev => {
+  const t = ev.target; if(!t.closest('#svForm')) return;
+  const q = (st.sv.questions || []).find(x => x.id === t.name);
+  // 다시 그려야 하는 경우: 상태 바뀜(직장 문항 표시), 기타 입력칸, 최대 개수
+  if(q && (q.map === 'status' || q.other || (q.type === 'multi' && q.max))){
+    if(q.type === 'multi' && q.max && t.checked && t.value !== '__other' && [...document.querySelectorAll(`input[name="${CSS.escape(q.id)}"]:checked`)].filter(x => x.value !== '__other').length > q.max){
+      t.checked = false; const e = $('#s-err'); if(e){ e.innerHTML = `<div class="err">${E(q.title)}은(는) ${q.max}개까지 고를 수 있습니다.</div>`; } return;
+    }
+    readForm(); const y = window.scrollY; render(); window.scrollTo(0, y);
+  }
+});
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-act="again"]'); if(!b) return;
+  st.view = 'form'; st.ans = {}; render(); window.scrollTo(0, 0);
+});
+document.addEventListener('submit', async ev => {
+  ev.preventDefault(); if(st.busy) return;
+  readForm(); const bad = check();
+  if(bad){ $('#s-err').innerHTML = `<div class="err" role="alert">${E(bad[1])}</div>`; document.getElementById('q-' + bad[0])?.scrollIntoView({block:'center', behavior:'smooth'}); return; }
+  if(st.sv.preview){ st.view = 'done'; st.again = false; render(); return window.scrollTo(0, 0); }
+  const ans = {...st.ans};
+  for(const q of st.sv.questions || []) if(q.type === 'consent' && ans[q.id]) ans[q.id] = {privacy:!!ans[q.id].privacy, marketing:ans[q.id].marketing ?? null};
+  st.busy = true; const btn = $('#svForm [type=submit]'); if(btn){ btn.disabled = true; btn.textContent = '제출하는 중…'; }
+  try{ const r = await rpc('s_submit', {t:TOKEN, ans}); st.again = !!r.again; st.view = 'done'; st.sv.responded_at = new Date().toISOString(); st.busy = false; render(); window.scrollTo(0, 0); }
+  catch(e){ st.busy = false; if(btn){ btn.disabled = false; btn.textContent = '제출하기'; } $('#s-err').innerHTML = `<div class="err" role="alert">${E(e.message)}</div>`; }
+});
+
+(async function boot(){
+  if(setupErr){ render(); return; }
+  if(!TOKEN && !PREVIEW){ st.view = 'error'; st.err = '설문 링크가 아닙니다.'; return render(); }
+  try{
+    const r = TOKEN ? await rpc('s_open', {t:TOKEN}) : await rpc('s_preview', {k:PREVIEW});
+    if(!r || r.ok === false){ st.view = 'error'; st.err = r?.message || '설문을 찾을 수 없습니다.'; }
+    else { st.sv = r; st.view = 'form'; document.title = `${r.title} · 오픈놀 커리어링크`; }
+  }catch(e){ st.view = 'error'; st.err = e.message; }
+  render();
+})();
+</script>
+
+</body>
+</html>
